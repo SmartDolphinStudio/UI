@@ -1,3 +1,21 @@
+/**
+ * @file        useWebglFire.ts
+ * @author      Astraeus
+ * @created     2026-06-18 20:08:51 UTC
+ * @license     GPL-2.0-only
+ *
+ * WebGL2 rendering engine hook. Manages the full lifecycle of a 4-pass
+ * render pipeline: fire simulation, horizontal blur, vertical blur, and
+ * tone-mapped composite output. Runs an idle-aware requestAnimationFrame
+ * loop and cleans up all GPU resources on unmount.
+ *
+ * Rendering pipeline and visual design are heavily inspired by the
+ * effort-level slider animation in Claude Code by Anthropic.
+ *
+ * @disclaimer
+ * This file is distributed under GNU General Public License v2.0. Anyone who modifies any source files of this project shall fully open-source all modified codes under the same GPLv2 license. The author assumes no liability for any direct or indirect economic losses and legal risks arising from the usage of this code. All interpretation rights of this repository belong exclusively to Astraeus. Contact: SmartDolphinStudio@gmail.com
+ */
+
 import { useEffect, useRef } from 'react'
 import { VERT, FRAG_SIM, FRAG_BLUR, FRAG_COMP } from '../shaders/index'
 

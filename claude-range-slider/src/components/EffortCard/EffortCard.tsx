@@ -1,3 +1,21 @@
+/**
+ * @file        EffortCard.tsx
+ * @author      Astraeus
+ * @created     2026-06-18 20:08:51 UTC
+ * @license     GPL-2.0-only
+ *
+ * Effort-level slider card with a WebGL2 fire animation that ignites when
+ * the slider reaches 100 (the "Ultracode" threshold). Includes squircle
+ * clip paths, a status label with a flip-up entrance animation, and a
+ * masked canvas layer rendered in screen blend mode.
+ *
+ * Visual design and animation behavior are heavily inspired by the
+ * effort-level slider UI found in Claude Code by Anthropic.
+ *
+ * @disclaimer
+ * This file is distributed under GNU General Public License v2.0. Anyone who modifies any source files of this project shall fully open-source all modified codes under the same GPLv2 license. The author assumes no liability for any direct or indirect economic losses and legal risks arising from the usage of this code. All interpretation rights of this repository belong exclusively to Astraeus. Contact: SmartDolphinStudio@gmail.com
+ */
+
 import { useRef, useMemo, CSSProperties } from 'react'
 import { useSliderState } from './hooks/useSliderState'
 import { useWebglFire } from './hooks/useWebglFire'
