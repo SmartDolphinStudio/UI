@@ -1,0 +1,554 @@
+[
+  {
+    "slug": "dp-security-matrix",
+    "title": "Access / Permission Matrix",
+    "description": "Role x component access at a glance.",
+    "files": [
+      "AccessMatrix.tsx",
+      "README.md"
+    ],
+    "codeFile": "AccessMatrix.tsx",
+    "preview": "/diagrams/dp-security-matrix/preview.png",
+    "readme": "/diagrams/dp-security-matrix/README.md"
+  },
+  {
+    "slug": "architecture",
+    "title": "Architecture Diagram",
+    "description": "System-level architecture: components, connections, and entry points at a glance.",
+    "files": [
+      "ArchitectureDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "ArchitectureDiagram.tsx",
+    "preview": "/diagrams/architecture/preview.png",
+    "readme": "/diagrams/architecture/README.md"
+  },
+  {
+    "slug": "bar",
+    "title": "Bar Chart",
+    "description": "Compare discrete quantities across categories or time intervals.",
+    "files": [
+      "BarDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "BarDiagram.tsx",
+    "preview": "/diagrams/bar/preview.png",
+    "readme": "/diagrams/bar/README.md"
+  },
+  {
+    "slug": "beeswarm",
+    "title": "Beeswarm Plot",
+    "description": "Every data point sits on one shared axis; vertical spread is packing only.",
+    "files": [
+      "BeeswarmPlot.tsx",
+      "README.md"
+    ],
+    "codeFile": "BeeswarmPlot.tsx",
+    "preview": "/diagrams/beeswarm/preview.png",
+    "readme": "/diagrams/beeswarm/README.md"
+  },
+  {
+    "slug": "bubble",
+    "title": "Bubble Chart",
+    "description": "Three numeric dimensions: x, y, and bubble area.",
+    "files": [
+      "BubbleChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "BubbleChart.tsx",
+    "preview": "/diagrams/bubble/preview.png",
+    "readme": "/diagrams/bubble/README.md"
+  },
+  {
+    "slug": "bump",
+    "title": "Bump Chart",
+    "description": "Show rank changes over time.",
+    "files": [
+      "BumpChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "BumpChart.tsx",
+    "preview": "/diagrams/bump/preview.png",
+    "readme": "/diagrams/bump/README.md"
+  },
+  {
+    "slug": "data-flow",
+    "title": "Data Flow Diagram",
+    "description": "Role-scoped analytics pipeline.",
+    "files": [
+      "DataFlowDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "DataFlowDiagram.tsx",
+    "preview": "/diagrams/data-flow/preview.png",
+    "readme": "/diagrams/data-flow/README.md"
+  },
+  {
+    "slug": "datalake",
+    "title": "Data Lake Architecture",
+    "description": "End-to-end open data lake stack.",
+    "files": [
+      "DataLakeArchitecture.tsx",
+      "README.md"
+    ],
+    "codeFile": "DataLakeArchitecture.tsx",
+    "preview": "/diagrams/datalake/preview.png",
+    "readme": "/diagrams/datalake/README.md"
+  },
+  {
+    "slug": "dp-integration",
+    "title": "Data Platform Integration",
+    "description": "Integration topology for a generic data platform.",
+    "files": [
+      "DataPlatformIntegration.tsx",
+      "README.md"
+    ],
+    "codeFile": "DataPlatformIntegration.tsx",
+    "preview": "/diagrams/dp-integration/preview.png",
+    "readme": "/diagrams/dp-integration/README.md"
+  },
+  {
+    "slug": "db-schema",
+    "title": "Database Schema Diagram",
+    "description": "Tables, columns, foreign keys, and constraints.",
+    "files": [
+      "DbSchemaDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "DbSchemaDiagram.tsx",
+    "preview": "/diagrams/db-schema/preview.png",
+    "readme": "/diagrams/db-schema/README.md"
+  },
+  {
+    "slug": "dependency",
+    "title": "Dependency Graph",
+    "description": "Module dependency ranking with fan-in and cycles.",
+    "files": [
+      "DependencyGraph.tsx",
+      "README.md"
+    ],
+    "codeFile": "DependencyGraph.tsx",
+    "preview": "/diagrams/dependency/preview.png",
+    "readme": "/diagrams/dependency/README.md"
+  },
+  {
+    "slug": "deployment",
+    "title": "Deployment Diagram",
+    "description": "Where each service runs: edge, cluster, and data zones.",
+    "files": [
+      "DeploymentDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "DeploymentDiagram.tsx",
+    "preview": "/diagrams/deployment/preview.png",
+    "readme": "/diagrams/deployment/README.md"
+  },
+  {
+    "slug": "er",
+    "title": "Entity-Relationship Diagram",
+    "description": "Entities and their relationships.",
+    "files": [
+      "ErDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "ErDiagram.tsx",
+    "preview": "/diagrams/er/preview.png",
+    "readme": "/diagrams/er/README.md"
+  },
+  {
+    "slug": "fishbone",
+    "title": "Fishbone (Ishikawa) Diagram",
+    "description": "Root-cause analysis across cause categories.",
+    "files": [
+      "FishboneDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "FishboneDiagram.tsx",
+    "preview": "/diagrams/fishbone/preview.png",
+    "readme": "/diagrams/fishbone/README.md"
+  },
+  {
+    "slug": "flowchart",
+    "title": "Flowchart",
+    "description": "Decisions, branches, and outcomes.",
+    "files": [
+      "Flowchart.tsx",
+      "README.md"
+    ],
+    "codeFile": "Flowchart.tsx",
+    "preview": "/diagrams/flowchart/preview.png",
+    "readme": "/diagrams/flowchart/README.md"
+  },
+  {
+    "slug": "gantt",
+    "title": "Gantt Chart",
+    "description": "Work items on a shared schedule.",
+    "files": [
+      "GanttChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "GanttChart.tsx",
+    "preview": "/diagrams/gantt/preview.png",
+    "readme": "/diagrams/gantt/README.md"
+  },
+  {
+    "slug": "high-level",
+    "title": "High-Level Architecture",
+    "description": "End-to-end stack overview in one banded diagram.",
+    "files": [
+      "HighLevelArchitecture.tsx",
+      "README.md"
+    ],
+    "codeFile": "HighLevelArchitecture.tsx",
+    "preview": "/diagrams/high-level/preview.png",
+    "readme": "/diagrams/high-level/README.md"
+  },
+  {
+    "slug": "it-state",
+    "title": "IT Landscape / Current-State Map",
+    "description": "What systems exist today, and how they hand off.",
+    "files": [
+      "ItLandscapeDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "ItLandscapeDiagram.tsx",
+    "preview": "/diagrams/it-state/preview.png",
+    "readme": "/diagrams/it-state/README.md"
+  },
+  {
+    "slug": "kanban",
+    "title": "Kanban Board",
+    "description": "Work in progress across columns, with WIP limits.",
+    "files": [
+      "KanbanBoard.tsx",
+      "README.md"
+    ],
+    "codeFile": "KanbanBoard.tsx",
+    "preview": "/diagrams/kanban/preview.png",
+    "readme": "/diagrams/kanban/README.md"
+  },
+  {
+    "slug": "layers",
+    "title": "Layered Stack",
+    "description": "Stack layers with one focal layer.",
+    "files": [
+      "LayeredStack.tsx",
+      "README.md"
+    ],
+    "codeFile": "LayeredStack.tsx",
+    "preview": "/diagrams/layers/preview.png",
+    "readme": "/diagrams/layers/README.md"
+  },
+  {
+    "slug": "line",
+    "title": "Line Chart",
+    "description": "Trends over time across series.",
+    "files": [
+      "LineChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "LineChart.tsx",
+    "preview": "/diagrams/line/preview.png",
+    "readme": "/diagrams/line/README.md"
+  },
+  {
+    "slug": "loop",
+    "title": "Loop / Cycle Diagram",
+    "description": "A cyclic process with a central shared state.",
+    "files": [
+      "LoopDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "LoopDiagram.tsx",
+    "preview": "/diagrams/loop/preview.png",
+    "readme": "/diagrams/loop/README.md"
+  },
+  {
+    "slug": "medallion",
+    "title": "Medallion Architecture",
+    "description": "Raw to refined data tiers.",
+    "files": [
+      "MedallionArchitecture.tsx",
+      "README.md"
+    ],
+    "codeFile": "MedallionArchitecture.tsx",
+    "preview": "/diagrams/medallion/preview.png",
+    "readme": "/diagrams/medallion/README.md"
+  },
+  {
+    "slug": "nested",
+    "title": "Nested Containers",
+    "description": "Hierarchy as nested boxes.",
+    "files": [
+      "NestedContainers.tsx",
+      "README.md"
+    ],
+    "codeFile": "NestedContainers.tsx",
+    "preview": "/diagrams/nested/preview.png",
+    "readme": "/diagrams/nested/README.md"
+  },
+  {
+    "slug": "org-chart",
+    "title": "Org Chart",
+    "description": "Reporting and routing structure.",
+    "files": [
+      "OrgChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "OrgChart.tsx",
+    "preview": "/diagrams/org-chart/preview.png",
+    "readme": "/diagrams/org-chart/README.md"
+  },
+  {
+    "slug": "polar",
+    "title": "Polar Chart",
+    "description": "Radial categories on a percentage scale.",
+    "files": [
+      "PolarChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "PolarChart.tsx",
+    "preview": "/diagrams/polar/preview.png",
+    "readme": "/diagrams/polar/README.md"
+  },
+  {
+    "slug": "process",
+    "title": "Process Diagram",
+    "description": "A process across owning teams.",
+    "files": [
+      "ProcessDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "ProcessDiagram.tsx",
+    "preview": "/diagrams/process/preview.png",
+    "readme": "/diagrams/process/README.md"
+  },
+  {
+    "slug": "pyramid",
+    "title": "Pyramid Diagram",
+    "description": "Ordered by cadence and leverage.",
+    "files": [
+      "PyramidDiagram.tsx",
+      "README.md"
+    ],
+    "codeFile": "PyramidDiagram.tsx",
+    "preview": "/diagrams/pyramid/preview.png",
+    "readme": "/diagrams/pyramid/README.md"
+  },
+  {
+    "slug": "quadrant",
+    "title": "Quadrant Matrix",
+    "description": "2x2 prioritization.",
+    "files": [
+      "QuadrantMatrix.tsx",
+      "README.md"
+    ],
+    "codeFile": "QuadrantMatrix.tsx",
+    "preview": "/diagrams/quadrant/preview.png",
+    "readme": "/diagrams/quadrant/README.md"
+  },
+  {
+    "slug": "radar",
+    "title": "Radar Chart",
+    "description": "Multi-dimensional capability comparison.",
+    "files": [
+      "RadarChart.tsx",
+      "README.md"
+    ],
+    "codeFile": "RadarChart.tsx",
+    "preview": "/diagrams/radar/preview.png",
+    "readme": "/diagrams/radar/README.md"
+  },
+  {
+    "slug": "ridgeline",
+    "title": "Ridgeline Plot",
+    "description": "Distributions side by side on one shared amplitude scale.",
+    "files": [
+      "README.md",
+      "RidgelinePlot.tsx"
+    ],
+    "codeFile": "RidgelinePlot.tsx",
+    "preview": "/diagrams/ridgeline/preview.png",
+    "readme": "/diagrams/ridgeline/README.md"
+  },
+  {
+    "slug": "sankey",
+    "title": "Sankey Diagram",
+    "description": "Flow volume splits and merges.",
+    "files": [
+      "README.md",
+      "SankeyDiagram.tsx"
+    ],
+    "codeFile": "SankeyDiagram.tsx",
+    "preview": "/diagrams/sankey/preview.png",
+    "readme": "/diagrams/sankey/README.md"
+  },
+  {
+    "slug": "scatter",
+    "title": "Scatter Plot",
+    "description": "Two metrics per entity, quadrant read.",
+    "files": [
+      "README.md",
+      "ScatterPlot.tsx"
+    ],
+    "codeFile": "ScatterPlot.tsx",
+    "preview": "/diagrams/scatter/preview.png",
+    "readme": "/diagrams/scatter/README.md"
+  },
+  {
+    "slug": "sequence",
+    "title": "Sequence Diagram",
+    "description": "Message order between participants.",
+    "files": [
+      "README.md",
+      "SequenceDiagram.tsx"
+    ],
+    "codeFile": "SequenceDiagram.tsx",
+    "preview": "/diagrams/sequence/preview.png",
+    "readme": "/diagrams/sequence/README.md"
+  },
+  {
+    "slug": "slopegraph",
+    "title": "Slopegraph",
+    "description": "Before / after per category on one shared scale.",
+    "files": [
+      "README.md",
+      "Slopegraph.tsx"
+    ],
+    "codeFile": "Slopegraph.tsx",
+    "preview": "/diagrams/slopegraph/preview.png",
+    "readme": "/diagrams/slopegraph/README.md"
+  },
+  {
+    "slug": "state",
+    "title": "State Machine",
+    "description": "States, transitions, rejection and revision.",
+    "files": [
+      "README.md",
+      "StateMachine.tsx"
+    ],
+    "codeFile": "StateMachine.tsx",
+    "preview": "/diagrams/state/preview.png",
+    "readme": "/diagrams/state/README.md"
+  },
+  {
+    "slug": "swimlane",
+    "title": "Swimlane Diagram",
+    "description": "A workflow across roles.",
+    "files": [
+      "README.md",
+      "SwimlaneDiagram.tsx"
+    ],
+    "codeFile": "SwimlaneDiagram.tsx",
+    "preview": "/diagrams/swimlane/preview.png",
+    "readme": "/diagrams/swimlane/README.md"
+  },
+  {
+    "slug": "timeline",
+    "title": "Timeline",
+    "description": "Milestones in chronological order.",
+    "files": [
+      "README.md",
+      "Timeline.tsx"
+    ],
+    "codeFile": "Timeline.tsx",
+    "preview": "/diagrams/timeline/preview.png",
+    "readme": "/diagrams/timeline/README.md"
+  },
+  {
+    "slug": "tree",
+    "title": "Tree Diagram",
+    "description": "A taxonomy that branches.",
+    "files": [
+      "README.md",
+      "TreeDiagram.tsx"
+    ],
+    "codeFile": "TreeDiagram.tsx",
+    "preview": "/diagrams/tree/preview.png",
+    "readme": "/diagrams/tree/README.md"
+  },
+  {
+    "slug": "treemap",
+    "title": "Treemap",
+    "description": "Area is the value; hierarchy is the nesting.",
+    "files": [
+      "README.md",
+      "Treemap.tsx"
+    ],
+    "codeFile": "Treemap.tsx",
+    "preview": "/diagrams/treemap/preview.png",
+    "readme": "/diagrams/treemap/README.md"
+  },
+  {
+    "slug": "uml-class",
+    "title": "UML Class Diagram",
+    "description": "Classes, interfaces, and relations.",
+    "files": [
+      "README.md",
+      "UmlClassDiagram.tsx"
+    ],
+    "codeFile": "UmlClassDiagram.tsx",
+    "preview": "/diagrams/uml-class/preview.png",
+    "readme": "/diagrams/uml-class/README.md"
+  },
+  {
+    "slug": "journey",
+    "title": "User Journey Map",
+    "description": "Stages, actions, touchpoints, and sentiment.",
+    "files": [
+      "README.md",
+      "UserJourneyMap.tsx"
+    ],
+    "codeFile": "UserJourneyMap.tsx",
+    "preview": "/diagrams/journey/preview.png",
+    "readme": "/diagrams/journey/README.md"
+  },
+  {
+    "slug": "story-map",
+    "title": "User Story Map",
+    "description": "Activities, steps, and release slices.",
+    "files": [
+      "README.md",
+      "UserStoryMap.tsx"
+    ],
+    "codeFile": "UserStoryMap.tsx",
+    "preview": "/diagrams/story-map/preview.png",
+    "readme": "/diagrams/story-map/README.md"
+  },
+  {
+    "slug": "venn",
+    "title": "Venn Diagram",
+    "description": "Set intersections.",
+    "files": [
+      "README.md",
+      "VennDiagram.tsx"
+    ],
+    "codeFile": "VennDiagram.tsx",
+    "preview": "/diagrams/venn/preview.png",
+    "readme": "/diagrams/venn/README.md"
+  },
+  {
+    "slug": "wardley",
+    "title": "Wardley Map",
+    "description": "Value chain vs. evolution.",
+    "files": [
+      "README.md",
+      "WardleyMap.tsx"
+    ],
+    "codeFile": "WardleyMap.tsx",
+    "preview": "/diagrams/wardley/preview.png",
+    "readme": "/diagrams/wardley/README.md"
+  },
+  {
+    "slug": "waterfall",
+    "title": "Waterfall Chart",
+    "description": "A running-total bridge between two numbers.",
+    "files": [
+      "README.md",
+      "WaterfallChart.tsx"
+    ],
+    "codeFile": "WaterfallChart.tsx",
+    "preview": "/diagrams/waterfall/preview.png",
+    "readme": "/diagrams/waterfall/README.md"
+  }
+]
