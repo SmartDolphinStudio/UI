@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
