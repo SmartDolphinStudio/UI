@@ -4,7 +4,7 @@ A chart and diagram component gallery built with React 19, TypeScript and Tailwi
 
 ---
 
-Gallery
+## Gallery
 
 The gallery ships with **46 chart components**, including:
 
@@ -16,3 +16,37 @@ The gallery ships with **46 chart components**, including:
 Every component folder under `public/diagrams/` contains the React source (`*.tsx`), a rendered preview image and a README document describing the component.
 
 ---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | React 19, React Router 7 |
+| Build | Vite 8, TypeScript 6 |
+| Styling | Tailwind CSS 4 |
+| Rendering | React Markdown, remark-gfm, Prism React Renderer |
+
+---
+
+## Getting Started
+
+```bash
+pnpm install
+pnpm dev
+```
+
+The development server starts with hot module replacement and opens at `http://localhost:5173`.
+
+### Build
+
+```bash
+pnpm build
+```
+
+Output is written to `dist/`.
+
+---
+
+## License
+
+**GNU General Public License v2.0 (GPLv2)** — see the source file headers for the full disclaimer. Copyright (C) 2026 Astraeus.
