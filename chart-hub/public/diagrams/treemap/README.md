@@ -4,19 +4,17 @@
 
 ![Preview](preview.png)
 
-Overview
+## Overview
 
 The **Treemap** is a self-contained editorial diagram. Area is the value; hierarchy is the nesting. It ships as a **single-file React component** (inline SVG + Tailwind CSS) with no chart library, no data files, and no external stylesheets — copy the file in and it renders immediately.
 
 Treemap of world population by continent in mid-2023, where cell area is population; Asia holds about 59 percent of the world total and Oceania, at under one percent, is too small to label.
-
 
 ## When to use it
 
 - Budget and portfolio allocation
 - Market share and population breakdowns
 - Any area-as-value hierarchical split
-
 
 ## Tech stack
 
@@ -26,7 +24,6 @@ Treemap of world population by continent in mid-2023, where cell area is populat
 | Types | **TypeScript 5+** | Typed props for safe, self-documenting usage |
 | Styling | **Tailwind CSS** | Layout only, on the wrapper element |
 | Graphics | **Inline SVG** | The entire diagram is hand-authored SVG |
-
 
 ## File anatomy
 
@@ -41,7 +38,6 @@ Treemap of world population by continent in mid-2023, where cell area is populat
   3. **The SVG** — one `<svg viewBox="0 0 1000 500">` containing every element of the
      diagram. `treemap-title` / `treemap-desc` provide accessible names.
 
-
 ## Visual layers
 
 Reading the SVG top to bottom:
@@ -53,13 +49,11 @@ Reading the SVG top to bottom:
 
 If a cell is too small to label, say so in the caption instead of forcing text.
 
-
 ## Props
 
 | Prop        | Type     | Default                          | Description                       |
 | ----------- | -------- | -------------------------------- | --------------------------------- |
 | `className` | `string` | `"w-full max-w-4xl mx-auto"`     | Extra classes for the wrapper div |
-
 
 ## Usage
 
@@ -71,3 +65,39 @@ If a cell is too small to label, say so in the caption instead of forcing text.
    }
    
 ```
+
+## Customization
+
+- **Sizing** — override `className` to control the wrapper width and margins.
+- **Colors** — edit the SVG `fill` / `stroke` presentation attributes directly to match your brand palette.
+- **Content** — the SVG is hand-authored; edit labels and geometry directly in the JSX to reflect your own data.
+
+## Accessibility
+
+- `role="img"` with an `aria-labelledby` title + description
+- Text inside the SVG is real text, not images — screen-reader friendly
+- Focus-safe: no interactive elements, safe to embed anywhere
+
+## Browser support
+
+Runs anywhere React 18+ runs — Chrome, Firefox, Safari, Edge. No WebGL, no canvas,
+no network requests beyond the one-time Google Fonts stylesheet.
+
+## Notes
+
+- **Responsive** — the SVG scales to its container width via the `viewBox`;
+  control size with `className` (`max-w-*`, `w-full`, etc.).
+- **Fonts** — Geist / Geist Mono / Instrument Serif are loaded from Google
+  Fonts automatically. Offline, they fall back to `system-ui` / `monospace`
+  without breaking the layout.
+- **Duplicates** — rendering the same component twice on one page repeats
+  internal SVG ids (`treemap-title`, patterns). Visual output is unaffected;
+  only a11y tooling sees duplicated ids.
+- **Tailwind optional** — the diagram itself is styled by SVG presentation
+  attributes, so it renders even in a project without Tailwind; only the
+  wrapper's utility classes need Tailwind.
+
+## Credits
+
+Adapted from [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design)
+(MIT License).
