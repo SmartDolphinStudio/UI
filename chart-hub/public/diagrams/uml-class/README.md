@@ -16,3 +16,39 @@ Class diagram showing Card and BankTransfer realizing a PaymentMethod interface,
 - Domain-modeling documentation
 - API and service design docs
 - Codebase onboarding for a payments domain
+
+
+## Tech stack
+
+| Layer | Technology | Role |
+| ----- | ---------- | ---- |
+| UI | **React 18+** | Function component with hooks, no classes |
+| Types | **TypeScript 5+** | Typed props for safe, self-documenting usage |
+| Styling | **Tailwind CSS** | Layout only, on the wrapper element |
+| Graphics | **Inline SVG** | The entire diagram is hand-authored SVG |
+
+
+## File anatomy
+
+- `UmlClassDiagram.tsx` — the whole diagram in one file:
+
+  1. **Font loading** — a `useEffect` injects the editorial font stack
+     (Geist, Geist Mono, Instrument Serif) into the page once. It is idempotent,
+     so rendering many diagrams never duplicates the stylesheet link.
+  2. **Wrapper** — a `<div>` with Tailwind utilities (`w-full max-w-4xl mx-auto`)
+     and a `data-diagram="uml-class"` attribute. Pass your own `className` to
+     override sizing.
+  3. **The SVG** — one `<svg viewBox="0 0 980 664">` containing every element of the
+     diagram. `uml-class-title` / `uml-class-desc` provide accessible names.
+
+
+## Visual layers
+
+Reading the SVG top to bottom:
+
+- Class boxes with name / attributes / methods
+- An interface box with the realizes relation
+- Dependency, composition, and association lines
+- Relation markers (arrowheads, diamonds)
+
+Keep the marker vocabulary consistent with standard UML.
