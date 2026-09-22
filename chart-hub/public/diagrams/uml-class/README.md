@@ -52,3 +52,22 @@ Reading the SVG top to bottom:
 - Relation markers (arrowheads, diamonds)
 
 Keep the marker vocabulary consistent with standard UML.
+
+
+## Props
+
+| Prop        | Type     | Default                          | Description                       |
+| ----------- | -------- | -------------------------------- | --------------------------------- |
+| `className` | `string` | `"w-full max-w-4xl mx-auto"`     | Extra classes for the wrapper div |
+
+
+## Usage
+
+```tsx
+   import UmlClassDiagram from "./components/UmlClassDiagram";
+
+   export function Dashboard() {
+     return <UmlClassDiagram className="w-full max-w-4xl mx-auto" />;
+   }
+   
+```
