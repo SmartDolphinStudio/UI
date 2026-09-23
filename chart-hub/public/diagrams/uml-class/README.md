@@ -71,3 +71,10 @@ Keep the marker vocabulary consistent with standard UML.
    }
    
 ```
+
+
+## Customization
+
+- **Sizing** — override `className` to control the wrapper width and margins.
+- **Colors** — edit the SVG `fill` / `stroke` presentation attributes directly to match your brand palette.
+- **Content** — the SVG is hand-authored; edit labels and geometry directly in the JSX to reflect your own data.
