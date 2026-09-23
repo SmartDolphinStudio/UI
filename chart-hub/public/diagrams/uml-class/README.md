@@ -78,3 +78,10 @@ Keep the marker vocabulary consistent with standard UML.
 - **Sizing** — override `className` to control the wrapper width and margins.
 - **Colors** — edit the SVG `fill` / `stroke` presentation attributes directly to match your brand palette.
 - **Content** — the SVG is hand-authored; edit labels and geometry directly in the JSX to reflect your own data.
+
+
+## Accessibility
+
+- `role="img"` with an `aria-labelledby` title + description
+- Text inside the SVG is real text, not images — screen-reader friendly
+- Focus-safe: no interactive elements, safe to embed anywhere
