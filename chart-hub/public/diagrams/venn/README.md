@@ -52,3 +52,22 @@ Reading the SVG top to bottom:
 - Accent on the intersection that matters
 
 Three circles is the ceiling; more sets belong in a matrix.
+
+
+## Props
+
+| Prop        | Type     | Default                          | Description                       |
+| ----------- | -------- | -------------------------------- | --------------------------------- |
+| `className` | `string` | `"w-full max-w-4xl mx-auto"`     | Extra classes for the wrapper div |
+
+
+## Usage
+
+```tsx
+   import VennDiagram from "./components/VennDiagram";
+
+   export function Dashboard() {
+     return <VennDiagram className="w-full max-w-4xl mx-auto" />;
+   }
+   
+```
