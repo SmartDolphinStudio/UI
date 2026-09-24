@@ -52,3 +52,29 @@ Reading the SVG top to bottom:
 - The largest saving in accent
 
 Deltas are floating bars, not columns from zero — that is the whole grammar.
+
+
+## Props
+
+| Prop        | Type     | Default                          | Description                       |
+| ----------- | -------- | -------------------------------- | --------------------------------- |
+| `className` | `string` | `"w-full max-w-4xl mx-auto"`     | Extra classes for the wrapper div |
+
+
+## Usage
+
+```tsx
+   import WaterfallChart from "./components/WaterfallChart";
+
+   export function Dashboard() {
+     return <WaterfallChart className="w-full max-w-4xl mx-auto" />;
+   }
+   
+```
+
+
+## Customization
+
+- **Sizing** — override `className` to control the wrapper width and margins.
+- **Colors** — edit the SVG `fill` / `stroke` presentation attributes directly to match your brand palette.
+- **Content** — the SVG is hand-authored; edit labels and geometry directly in the JSX to reflect your own data.
