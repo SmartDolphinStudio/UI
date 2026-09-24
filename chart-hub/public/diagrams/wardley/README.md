@@ -52,3 +52,22 @@ Reading the SVG top to bottom:
 - The commoditising component highlighted in accent
 
 The x-axis is evolution, not time — keep the labels honest.
+
+
+## Props
+
+| Prop        | Type     | Default                          | Description                       |
+| ----------- | -------- | -------------------------------- | --------------------------------- |
+| `className` | `string` | `"w-full max-w-4xl mx-auto"`     | Extra classes for the wrapper div |
+
+
+## Usage
+
+```tsx
+   import WardleyMap from "./components/WardleyMap";
+
+   export function Dashboard() {
+     return <WardleyMap className="w-full max-w-4xl mx-auto" />;
+   }
+   
+```
