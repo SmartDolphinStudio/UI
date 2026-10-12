@@ -144,6 +144,19 @@
     "readme": "/diagrams/deployment/README.md"
   },
   {
+    "slug": "donut",
+    "title": "Donut Chart",
+    "description": "Part-to-whole composition of monthly acquisition channels.",
+    "files": [
+      "DonutDiagram.tsx",
+      "README.md",
+      "preview.html"
+    ],
+    "codeFile": "DonutDiagram.tsx",
+    "preview": "/diagrams/donut/preview.png",
+    "readme": "/diagrams/donut/README.md"
+  },
+  {
     "slug": "er",
     "title": "Entity-Relationship Diagram",
     "description": "Entities and their relationships.",
@@ -352,8 +365,8 @@
     "title": "Radar Chart",
     "description": "Multi-dimensional capability comparison.",
     "files": [
-      "RadarChart.tsx",
-      "README.md"
+      "README.md",
+      "RadarChart.tsx"
     ],
     "codeFile": "RadarChart.tsx",
     "preview": "/diagrams/radar/preview.png",

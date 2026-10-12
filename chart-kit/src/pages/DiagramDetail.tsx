@@ -46,6 +46,7 @@ export default function DiagramDetail() {
   useEffect(() => {
     if (!meta) return
     let cancelled = false
+    const controller = new AbortController()
 
     const load = async () => {
       setLoading(true)
@@ -53,15 +54,17 @@ export default function DiagramDetail() {
       try {
         const [codeRes, readmeRes] = await Promise.all([
           meta.codeFile
-            ? fetch(`/diagrams/${meta.slug}/${meta.codeFile}`)
+            ? fetch(`/diagrams/${meta.slug}/${meta.codeFile}`, { signal: controller.signal })
             : Promise.resolve(null),
-          fetch(meta.readme),
+          fetch(meta.readme, { signal: controller.signal }),
         ])
         if (cancelled) return
         if (codeRes && !codeRes.ok) throw new Error('Failed to load source file')
         if (!readmeRes.ok) throw new Error('Failed to load documentation')
-        setCode(codeRes ? await codeRes.text() : '')
-        setReadme(await readmeRes.text())
+        const [source, documentation] = await Promise.all([codeRes ? codeRes.text() : Promise.resolve(''), readmeRes.text()])
+        if (cancelled) return
+        setCode(source)
+        setReadme(documentation)
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : 'Load failed')
       } finally {
@@ -72,6 +75,7 @@ export default function DiagramDetail() {
     load()
     return () => {
       cancelled = true
+      controller.abort()
     }
   }, [meta?.slug]) // eslint-disable-line react-hooks/exhaustive-deps
 

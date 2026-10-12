@@ -93,14 +93,14 @@ The backend intentionally does not ship Redis. Each service owner connects their
 LISTEN_ADDR=127.0.0.1:18080
 REDIS_ADDR=127.0.0.1:6379
 REDIS_PASSWORD=
-ALTCHA_SECRET=change-this-secret
-ALTCHA_KEY_SECRET=change-this-key-secret
+ALTCHA_SECRET=<independent random secret, at least 32 bytes>
+ALTCHA_KEY_SECRET=<independent random secret, at least 32 bytes>
 ```
 
 ## Development
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -123,3 +123,10 @@ go run .
 ## License
 
 GPL-2.0-only
+
+
+## Server acceptance contract
+
+`onProofReady` means the browser computed a proof. The sample then posts it to the server, shows the acceptance result, and does not create an authenticated account/session. A production protected business endpoint must verify and atomically consume the proof itself before its protected action. Do not accept the browser callback or a prior client's success flag as authorization. A consumed proof cannot be reused, including from another IP. Redis errors fail closed. The standalone verify endpoint is only a demo; do not pre-consume a proof there when a real business endpoint will consume it.
+
+The SDK uses the same origin by default. Vite proxies `/api` to `127.0.0.1:18080`. In production serve UI/API at the same origin. `TRUSTED_PROXY_CIDRS` is empty by default; configure only proxies that overwrite X-Real-IP and prevent direct bypass. Both challenge and verification are limited; verification has a bounded concurrency budget and HTTP/body time limits. Redis rate operations use an atomic Lua script and proof consumption uses SET NX with expiry.

@@ -24,7 +24,7 @@ export type SmartDolphinVerificationOptions = {
   fetcher?: typeof fetch;
 };
 
-const defaultApiBase = 'https://api.smartdolphin.top';
+const defaultApiBase = ''; // Same origin; Vite proxies /api during development.
 const defaultChallengePath = '/api/chat/challenge';
 
 function encodePayload(payload: Payload) {

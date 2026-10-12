@@ -56,6 +56,7 @@ export function useSliderState(): SliderState {
   const animationRef = useRef<number | null>(null)
   const startValueRef = useRef(75)
   const startTimeRef = useRef(0)
+  const inputValueRef = useRef(75)
 
   const statusLabel = getLabel(sliderValue)
   const isActive = sliderValue >= THRESHOLD
@@ -124,18 +125,21 @@ export function useSliderState(): SliderState {
   }, [targetValue])
 
   const onInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setTargetValue(parseInt(e.target.value, 10))
+    inputValueRef.current = Number(e.currentTarget.value)
+    setTargetValue(inputValueRef.current)
   }, [])
 
   const onMouseUp = useCallback(() => {
-    const snapped = snapToNearest(sliderValue)
+    const snapped = snapToNearest(inputValueRef.current)
+    inputValueRef.current = snapped
     setTargetValue(snapped)
-  }, [sliderValue])
+  }, [])
 
   const onTouchEnd = useCallback(() => {
-    const snapped = snapToNearest(sliderValue)
+    const snapped = snapToNearest(inputValueRef.current)
+    inputValueRef.current = snapped
     setTargetValue(snapped)
-  }, [sliderValue])
+  }, [])
 
   return { sliderValue, isActive, isFull, isAnimating, statusLabel, onInput, onMouseUp, onTouchEnd }
 }

@@ -6,10 +6,13 @@ package main
 import (
 	"context"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"log"
 	"math/big"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -26,9 +29,11 @@ const (
 )
 
 type verificationServer struct {
-	redis     *redis.Client
-	secret    string
-	keySecret string
+	redis          *redis.Client
+	secret         string
+	keySecret      string
+	verifySlots    chan struct{}
+	trustedProxies []*net.IPNet
 }
 
 func main() {
@@ -42,9 +47,11 @@ func main() {
 	}
 
 	server := verificationServer{
-		redis:     rdb,
-		secret:    requiredEnv("ALTCHA_SECRET"),
-		keySecret: requiredEnv("ALTCHA_KEY_SECRET"),
+		redis:          rdb,
+		secret:         requiredEnv("ALTCHA_SECRET"),
+		keySecret:      requiredEnv("ALTCHA_KEY_SECRET"),
+		verifySlots:    make(chan struct{}, 8),
+		trustedProxies: proxyNetworks(os.Getenv("TRUSTED_PROXY_CIDRS")),
 	}
 
 	mux := http.NewServeMux()
@@ -53,11 +60,12 @@ func main() {
 
 	addr := envOr("LISTEN_ADDR", "127.0.0.1:18080")
 	log.Printf("smart dolphin verification listening on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, securityHeaders(mux)))
+	httpServer := &http.Server{Addr: addr, Handler: securityHeaders(mux), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 30 * time.Second, MaxHeaderBytes: 16 << 10}
+	log.Fatal(httpServer.ListenAndServe())
 }
 
 func (s verificationServer) handleChallenge(w http.ResponseWriter, r *http.Request) {
-	if !s.allow(r.Context(), "challenge:"+clientIP(r), 30, 10*time.Minute) {
+	if !s.allow(r.Context(), "challenge:"+s.clientIP(r), 30, 10*time.Minute) {
 		writeJSON(w, http.StatusTooManyRequests, map[string]any{"ok": false, "error": "too_many_attempts"})
 		return
 	}
@@ -88,6 +96,20 @@ func (s verificationServer) handleChallenge(w http.ResponseWriter, r *http.Reque
 }
 
 func (s verificationServer) handleVerify(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 10*time.Second)
+	defer cancel()
+	r = r.WithContext(ctx)
+	if !s.allow(ctx, "verify:"+s.clientIP(r), 30, time.Minute) {
+		writeJSON(w, 429, map[string]any{"ok": false, "error": "too_many_attempts"})
+		return
+	}
+	select {
+	case s.verifySlots <- struct{}{}:
+		defer func() { <-s.verifySlots }()
+	default:
+		writeJSON(w, 503, map[string]any{"ok": false, "error": "verification_busy"})
+		return
+	}
 	var body struct {
 		Payload string `json:"payload"`
 	}
@@ -95,7 +117,7 @@ func (s verificationServer) handleVerify(w http.ResponseWriter, r *http.Request)
 		writeJSON(w, http.StatusBadRequest, map[string]any{"ok": false, "error": "invalid_json"})
 		return
 	}
-	if !s.verify(r.Context(), body.Payload, clientIP(r)) {
+	if !s.verify(r.Context(), body.Payload, s.clientIP(r)) {
 		writeJSON(w, http.StatusUnprocessableEntity, map[string]any{"ok": false, "error": "verification_failed"})
 		return
 	}
@@ -104,22 +126,27 @@ func (s verificationServer) handleVerify(w http.ResponseWriter, r *http.Request)
 
 func (s verificationServer) verify(ctx context.Context, encoded string, client string) bool {
 	payload, ok := decodePayload(encoded)
-	if !ok || !payloadLooksSane(payload) || s.wasReplay(ctx, payload, client) {
+	if !ok || !payloadLooksSane(payload) {
 		return false
 	}
 
 	result, err := altcha.VerifySolution(altcha.VerifySolutionOptions{
-		Challenge:           payload.Challenge,
-		Solution:            payload.Solution,
-		DeriveKey:           altcha.DeriveKeyPBKDF2(),
-		HMACSignatureSecret: s.secret,
+		Challenge:              payload.Challenge,
+		Solution:               payload.Solution,
+		DeriveKey:              altcha.DeriveKeyPBKDF2(),
+		HMACSignatureSecret:    s.secret,
+		HMACKeySignatureSecret: s.keySecret,
 	})
 	if err != nil || !result.Verified || result.Expired {
 		return false
 	}
 
-	s.markUsed(ctx, payload, client)
-	return true
+	ttl := time.Until(time.Unix(payload.Challenge.Parameters.ExpiresAt, 0))
+	if ttl <= 0 {
+		return false
+	}
+	consumed, err := s.redis.SetNX(ctx, replayKey(payload), "1", ttl).Result()
+	return err == nil && consumed
 }
 
 func decodePayload(encoded string) (altcha.Payload, bool) {
@@ -151,7 +178,7 @@ func payloadLooksSane(payload altcha.Payload) bool {
 	if p.ExpiresAt <= time.Now().Unix() || p.ExpiresAt > time.Now().Add(6*time.Minute).Unix() {
 		return false
 	}
-	if len(p.Nonce) != 24 || len(p.Salt) != 24 || len(p.KeyPrefix) != 32 || len(p.KeySignature) != 64 {
+	if len(p.Nonce) != 32 || len(p.Salt) != 32 || len(p.KeyPrefix) != 32 || len(p.KeySignature) != 64 {
 		return false
 	}
 	if payload.Solution.Counter < 0 || payload.Solution.Counter > 25000 || len(payload.Solution.DerivedKey) != 64 {
@@ -160,32 +187,17 @@ func payloadLooksSane(payload altcha.Payload) bool {
 	return hexish(p.Nonce) && hexish(p.Salt) && hexish(p.KeyPrefix) && hexish(p.KeySignature) && hexish(payload.Solution.DerivedKey)
 }
 
-func (s verificationServer) wasReplay(ctx context.Context, payload altcha.Payload, client string) bool {
-	exists, err := s.redis.Exists(ctx, replayKey(payload, client)).Result()
-	return err != nil || exists > 0
+// A challenge signature identifies the proof globally, regardless of client address.
+func replayKey(payload altcha.Payload) string {
+	sum := sha256.Sum256([]byte(payload.Challenge.Signature))
+	return "sdv:used:" + hex.EncodeToString(sum[:])
 }
 
-func (s verificationServer) markUsed(ctx context.Context, payload altcha.Payload, client string) {
-	ttl := time.Until(time.Unix(payload.Challenge.Parameters.ExpiresAt, 0))
-	if ttl < time.Minute {
-		ttl = time.Minute
-	}
-	_ = s.redis.Set(ctx, replayKey(payload, client), "1", ttl).Err()
-}
-
-func replayKey(payload altcha.Payload, client string) string {
-	return "sdv:used:" + client + ":" + payload.Challenge.Parameters.Nonce + ":" + payload.Solution.DerivedKey[:16]
-}
+var rateScript = redis.NewScript(`local n=redis.call('INCR',KEYS[1]); if n==1 or redis.call('PTTL',KEYS[1])<0 then redis.call('PEXPIRE',KEYS[1],ARGV[1]) end; return n`)
 
 func (s verificationServer) allow(ctx context.Context, key string, limit int64, window time.Duration) bool {
-	count, err := s.redis.Incr(ctx, "sdv:rate:"+key).Result()
-	if err != nil {
-		return false
-	}
-	if count == 1 {
-		_ = s.redis.Expire(ctx, "sdv:rate:"+key, window).Err()
-	}
-	return count <= limit
+	count, err := rateScript.Run(ctx, s.redis, []string{"sdv:rate:" + key}, window.Milliseconds()).Int64()
+	return err == nil && count <= limit
 }
 
 func randomCounter(min int, max int) (int, error) {
@@ -199,14 +211,39 @@ func randomCounter(min int, max int) (int, error) {
 	return min + int(n.Int64()), nil
 }
 
-func clientIP(r *http.Request) string {
-	if ip := strings.TrimSpace(r.Header.Get("X-Real-IP")); ip != "" {
-		return ip
+func proxyNetworks(value string) []*net.IPNet {
+	var out []*net.IPNet
+	for _, v := range strings.Split(value, ",") {
+		v = strings.TrimSpace(v)
+		if v == "" {
+			continue
+		}
+		_, network, err := net.ParseCIDR(v)
+		if err != nil {
+			log.Fatalf("invalid trusted proxy CIDR: %s", v)
+		}
+		out = append(out, network)
 	}
-	if ip := strings.TrimSpace(r.Header.Get("CF-Connecting-IP")); ip != "" {
-		return ip
+	return out
+}
+func (s verificationServer) clientIP(r *http.Request) string {
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return "invalid"
 	}
-	return r.RemoteAddr
+	ip := net.ParseIP(host)
+	if ip == nil {
+		return "invalid"
+	}
+	for _, network := range s.trustedProxies {
+		if network.Contains(ip) {
+			if forwarded := net.ParseIP(strings.TrimSpace(r.Header.Get("X-Real-IP"))); forwarded != nil {
+				return forwarded.String()
+			}
+			break
+		}
+	}
+	return ip.String()
 }
 
 func hexish(value string) bool {
@@ -244,8 +281,8 @@ func envOr(key string, fallback string) string {
 
 func requiredEnv(key string) string {
 	value := strings.TrimSpace(os.Getenv(key))
-	if value == "" {
-		log.Fatalf("missing %s", key)
+	if len(value) < 32 {
+		log.Fatalf("%s requires at least 32 random bytes", key)
 	}
 	return value
 }

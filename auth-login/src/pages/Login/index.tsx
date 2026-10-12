@@ -12,11 +12,11 @@ type LoginValues = {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function filterEmailInput(value: string) {
-  return value.replace(/[^A-Za-z0-9.@]/g, '')
+  return value
 }
 
 function filterPasswordInput(value: string) {
-  return value.replace(/[^A-Za-z0-9]/g, '')
+  return value
 }
 
 async function mockLogin(values: LoginValues) {

@@ -30,11 +30,12 @@ const dirs = readdirSync(ROOT).filter((d) => {
 const diagrams = dirs
   .map((dir) => {
     const p = join(ROOT, dir)
-    const files = readdirSync(p)
+    const files = readdirSync(p).sort()
     const tsx = files.find((f) => f.endsWith('.tsx'))
     const png = files.find((f) => f.endsWith('.png'))
     const mdPath = join(p, 'README.md')
 
+    if (!existsSync(mdPath) || !tsx || !png) throw new Error(`Incomplete diagram: ${dir} (README, TSX and PNG required)`);
     let title = dir
     let description = ''
     if (existsSync(mdPath)) {

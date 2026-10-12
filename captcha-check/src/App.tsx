@@ -18,9 +18,10 @@ export function App() {
       <SmartDolphinVerification
         open={open}
         onClose={() => setOpen(false)}
-        onVerified={(payload) => {
+        onProofReady={async (payload) => {
           setOpen(false);
-          setMessage(`Verification payload ready: ${payload.slice(0, 24)}...`);
+          setMessage('Proof computed; waiting for server acceptance.');
+          try {const response=await fetch('/api/chat/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({payload})});const body=await response.json();if(!response.ok||body.ok!==true)throw new Error('Server rejected proof');setMessage('Server accepted and consumed this proof. Demo only; no login session was created.');}catch(error){setMessage(error instanceof Error?error.message:'Verification unavailable');}
         }}
         onError={setMessage}
       />

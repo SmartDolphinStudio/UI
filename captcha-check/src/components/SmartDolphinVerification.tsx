@@ -10,14 +10,14 @@ import { createSmartDolphinVerification, type SmartDolphinVerificationOptions } 
 export type SmartDolphinVerificationProps = SmartDolphinVerificationOptions & {
   open: boolean;
   onClose: () => void;
-  onVerified: (payload: string) => void;
+  onProofReady: (payload: string) => void;
   onError?: (message: string) => void;
 };
 
 export function SmartDolphinVerification({
   open,
   onClose,
-  onVerified,
+  onProofReady,
   onError,
   ...options
 }: SmartDolphinVerificationProps) {
@@ -31,7 +31,7 @@ export function SmartDolphinVerification({
   const verify = async () => {
     setBusy(true);
     try {
-      onVerified(await createSmartDolphinVerification(options));
+      onProofReady(await createSmartDolphinVerification(options));
     } catch (error) {
       setNonce((value) => value + 1);
       onError?.(error instanceof Error ? error.message : 'Smart Dolphin Verification failed.');

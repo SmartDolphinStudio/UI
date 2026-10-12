@@ -77,3 +77,8 @@ modelnex-console/
 ## License
 
 GPL-2.0-only
+
+
+## Demonstration scope
+
+The page visibly marks demo mode. Code `123456` and its browser token are local mock behavior, with no real TOTP or server session. Email/password input is preserved. Do not enter real credentials. Production use requires server authentication, actual TOTP verification and server authorization.
