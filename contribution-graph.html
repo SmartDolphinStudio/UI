@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribution Graph</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    padding: 40px;
+    color: #24292f;
+  }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h2 { font-size: 24px; font-weight: 400; margin-bottom: 8px; }
+  .contributions-count { font-size: 14px; color: #57606a; margin-bottom: 20px; }
+  .contrib-graph {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-auto-flow: column;
+    gap: 3px;
+  }
+  .day {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+  }
+  .day.level-0 { background: #ebedf0; }
+  .day.level-1 { background: #9be9a2; }
+  .day.level-2 { background: #40c463; }
+  .day.level-3 { background: #30a14e; }
+  .day.level-4 { background: #216e39; }
+  .legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #57606a;
+  }
+  .legend .day { width: 10px; height: 10px; }
+  .months {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 3px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #57606a;
+  }
+  .month { text-align: center; }
+  .weeks {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    gap: 3px;
+    margin-right: 20px;
+    font-size: 12px;
+    color: #57606a;
+  }
+  .weekday { height: 12px; line-height: 12px; }
+  .graph-row { display: flex; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>AstraeusZhao</h2>
+  <div class="contributions-count" id="count"></div>
+  <div class="months" id="months"></div>
+  <div class="graph-row">
+    <div class="weeks" id="weeks">
+      <div class="weekday"></div>
+      <div class="weekday">Mon</div>
+      <div class="weekday"></div>
+      <div class="weekday">Wed</div>
+      <div class="weekday"></div>
+      <div class="weekday">Fri</div>
+      <div class="weekday"></div>
+    </div>
+    <div class="contrib-graph" id="graph"></div>
+  </div>
+  <div class="legend">
+    Less
+    <div class="day level-0"></div>
+    <div class="day level-1"></div>
+    <div class="day level-2"></div>
+    <div class="day level-3"></div>
+    <div class="day level-4"></div>
+    More
+  </div>
+</div>
+
+<script>
+// Generate contribution data from 2024-11-01 to 2026-10-12
+const startDate = new Date(2024, 10, 1); // Nov 1, 2024
+const endDate = new Date(2026, 9, 12);   // Oct 12, 2026
+const totalDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+// Generate random contributions: ~250 commits total over 2 years
+// Some months busy (10+), some quiet (2-3)
+const commitsPerDay = [];
+let totalCommits = 0;
+
+for (let i = 0; i < totalDays; i++) {
+  const date = new Date(startDate);
+  date.setDate(date.getDate() + i);
+  const month = date.getMonth();
+  const dayOfWeek = date.getDay();
+  
+  // Random base: 60% chance of 0 commits
+  let commits = 0;
+  const rand = Math.random();
+  
+  // Busy months: Jan, Feb, Mar, Aug, Sep, Oct (more active)
+  const busyMonths = [0, 1, 2, 7, 8, 9];
+  const isBusy = busyMonths.includes(month);
+  
+  if (rand < (isBusy ? 0.35 : 0.55)) {
+    // 1-2 commits
+    commits = 1 + Math.floor(Math.random() * 2);
+  } else if (rand < (isBusy ? 0.45 : 0.62)) {
+    // 3-5 commits
+    commits = 3 + Math.floor(Math.random() * 3);
+  } else if (rand < (isBusy ? 0.50 : 0.65)) {
+    // 6-9 commits
+    commits = 6 + Math.floor(Math.random() * 4);
+  } else if (rand < (isBusy ? 0.52 : 0.66)) {
+    // 10+ commits (rare)
+    commits = 10 + Math.floor(Math.random() * 5);
+  }
+  
+  // Weekends quieter
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    commits = Math.floor(commits * 0.5);
+  }
+  
+  commitsPerDay.push(commits);
+  totalCommits += commits;
+}
+
+// Adjust to ~250 commits
+const factor = 250 / totalCommits;
+for (let i = 0; i < commitsPerDay.length; i++) {
+  commitsPerDay[i] = Math.round(commitsPerDay[i] * factor);
+}
+totalCommits = commitsPerDay.reduce((a, b) => a + b, 0);
+
+document.getElementById('count').textContent = `${totalCommits} contributions in the last 2 years`;
+
+// Build the graph
+// Align to start on a Sunday (GitHub's first day of week)
+const firstDay = new Date(startDate);
+const firstDayOfWeek = firstDay.getDay(); // 0 = Sunday
+const graph = document.getElementById('graph');
+
+// Add empty cells before start date
+for (let i = 0; i < firstDayOfWeek; i++) {
+  const cell = document.createElement('div');
+  cell.className = 'day level-0';
+  graph.appendChild(cell);
+}
+
+// Add contribution cells
+for (let i = 0; i < commitsPerDay.length; i++) {
+  const commits = commitsPerDay[i];
+  let level = 0;
+  if (commits >= 1 && commits <= 2) level = 1;
+  else if (commits >= 3 && commits <= 5) level = 2;
+  else if (commits >= 6 && commits <= 9) level = 3;
+  else if (commits >= 10) level = 4;
+  
+  const cell = document.createElement('div');
+  cell.className = `day level-${level}`;
+  cell.title = `${commits} commits`;
+  graph.appendChild(cell);
+}
+
+// Add month labels
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthsDiv = document.getElementById('months');
+const weeksCount = Math.ceil((totalDays + firstDayOfWeek) / 7);
+
+let lastMonth = -1;
+for (let w = 0; w < weeksCount; w++) {
+  const date = new Date(startDate);
+  date.setDate(date.getDate() + w * 7 - firstDayOfWeek);
+  const m = date.getMonth();
+  if (m !== lastMonth) {
+    const label = document.createElement('div');
+    label.className = 'month';
+    label.textContent = months[m];
+    label.style.width = '52px';
+    monthsDiv.appendChild(label);
+    lastMonth = m;
+  }
+}
+</script>
+</body>
+</html>
